@@ -1,0 +1,12 @@
+DEPLOY CHECKLIST
+
+[ ] GitHub repository ထဲသို့ ZIP ကို extract လုပ်ပြီး project files/folders ကို upload လုပ်ပါ; ZIP တစ်ဖိုင်တည်း မတင်ပါနှင့်.
+[ ] Render > New Web Service > GitHub repository ရွေးပါ.
+[ ] Build Command: npm install
+[ ] Start Command: npm start
+[ ] Environment: NODE_ENV=production
+[ ] Environment: SESSION_SECRET = long random secret
+[ ] Environment: ADMIN_PASSWORD = strong unique password
+[ ] Persistent disk/storage ဖန်တီးပြီး DB_PATH ကို storage path ထဲသို့ သတ်မှတ်ပါ.
+[ ] Deploy logs ကိုစစ်ပြီး website, register/login, admin ကို စမ်းပါ.
+[ ] Public launch မတိုင်မီ security/privacy/legal review လုပ်ပါ.

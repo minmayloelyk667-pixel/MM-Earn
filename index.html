@@ -1,0 +1,18 @@
+<!doctype html>
+<html lang="my"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>MM Earn</title>
+<style>
+body{font-family:system-ui,sans-serif;background:#f4f6fb;margin:0;color:#202438}main{max-width:620px;margin:24px auto;padding:16px}.card{background:white;border-radius:16px;padding:20px;margin:14px 0;box-shadow:0 3px 15px #0001}h1{color:#6c35d5}input,select,button{box-sizing:border-box;width:100%;padding:12px;margin:6px 0;border:1px solid #ccd0dc;border-radius:9px;font-size:16px}button{background:#6c35d5;color:white;border:0;font-weight:700}small{color:#687080}.row{display:flex;gap:8px}.row>*{flex:1}#app{display:none}
+</style></head><body><main><h1>MM Earn</h1><p>ဂိမ်းအမှတ်နှင့် ငွေထုတ်တောင်းဆိုမှု စမ်းသပ် Website</p>
+<div class="card" id="auth"><h2>အကောင့်ဖွင့် / Login</h2><input id="username" placeholder="Username"><input id="password" type="password" placeholder="Password (အနည်းဆုံး 8 လုံး)"><div class="row"><button onclick="auth('register')">အကောင့်ဖွင့်</button><button onclick="auth('login')">Login</button></div><p id="authmsg"></p></div>
+<div class="card" id="app"><h2>မင်္ဂလာပါ <span id="uname"></span></h2><p>အမှတ်: <b id="points">0</b></p><button onclick="claim()">Demo Game ကစားပြီး ၅ မှတ်ရယူ</button><p id="gamemsg"></p><h3>ငွေထုတ်တောင်းဆိုရန်</h3><input id="amount" type="number" placeholder="အမှတ်ပမာဏ (အနည်းဆုံး 100)"><select id="method"><option>KBZPay</option><option>WavePay</option><option>USDT-TRC20</option></select><input id="account" placeholder="လက်ခံမည့် အကောင့် / Wallet"><button onclick="withdraw()">တောင်းဆိုမည်</button><p id="wmsg"></p><button onclick="logout()">Logout</button></div>
+<div class="card"><small>သတိပြုရန်: ဒီဟာက Starter/Demo ပဲဖြစ်ပါတယ်။ အမှန်တကယ်ကြော်ငြာဝင်ငွေ၊ ငွေပေးချေမှု သို့မဟုတ် Auto payout မပါသေးပါ။ အမှတ်များသည် ငွေသားတန်ဖိုးမဟုတ်ပါ။</small></div>
+</main><script>
+async function api(url,body){let r=await fetch(url,{method:body?'POST':'GET',headers:{'Content-Type':'application/json'},body:body?JSON.stringify(body):undefined});let d=await r.json();if(!r.ok)throw Error(d.error||'Error');return d}
+function show(u){document.getElementById('auth').style.display=u?'none':'block';document.getElementById('app').style.display=u?'block':'none';if(u){uname.textContent=u.username;points.textContent=u.points}}
+async function auth(kind){try{let d=await api('/api/'+kind,{username:username.value,password:password.value});show(d.user)}catch(e){authmsg.textContent=e.message}}
+async function refresh(){try{let d=await api('/api/me');show(d.user)}catch(e){}}
+async function claim(){try{let d=await api('/api/game/claim',{});show(d.user);gamemsg.textContent=d.message}catch(e){gamemsg.textContent=e.message}}
+async function withdraw(){try{let d=await api('/api/withdraw',{amount:Number(amount.value),method:method.value,account:account.value});wmsg.textContent=d.message;refresh()}catch(e){wmsg.textContent=e.message}}
+async function logout(){await api('/api/logout',{});show(null)}
+refresh();
+</script></body></html>
